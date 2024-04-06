@@ -2,9 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,35 +14,35 @@
         tools:context=".MainActivity">
 
         <include
-            android:id="@+id/lyt_marcador"
+            android:id="@+id/score_zone"
+            android:layout_marginHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/marcador_juego"
-            android:layout_marginHorizontal="20dp"
-            />
+            layout="@layout/score" />
+
         <include
-            android:id="@+id/lyt_cartas"
+            android:id="@+id/gameZone"
             android:layout_marginTop="40dp"
-            layout="@layout/cartas_imagen"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            layout="@layout/cartas_imagen"/>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/main_bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            android:layout_gravity="bottom|center"
             app:navigationIcon="@drawable/icon_menu"
-            app:menu="@menu/menu_main_activity" />
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            app:menu="@menu/menu_options" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabPrincipal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_nueva"
-            app:layout_anchor="@+id/main_bottom_app_bar"
-            android:contentDescription="@string/msg" />
+            android:contentDescription="@string/message"
 
+            android:src="@drawable/plus_icon"
+            app:layout_anchor="@id/main_bottom_app_bar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

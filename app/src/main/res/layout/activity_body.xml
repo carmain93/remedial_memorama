@@ -16,57 +16,60 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_card_margin"
-            android:layout_marginStart="@dimen/common_card_margin"
-            android:layout_marginEnd="@dimen/common_card_margin"
+            android:layout_marginTop="@dimen/card_margin"
+            android:layout_marginStart="@dimen/card_margin"
+            android:layout_marginEnd="@dimen/card_margin"
             android:clickable="true"
             android:focusable="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/common_paddin_default"
-                android:contentDescription="@string/hard_code_text">
+                android:padding="@dimen/common_padding_default"
+                android:contentDescription="@string/hard_coded">
 
                 <ImageView
-                    android:id="@+id/image_card"
+                    android:id="@+id/image_card_1"
                     android:layout_width="@dimen/image_common_size"
                     android:layout_height="@dimen/image_common_size"
+                    android:src="@drawable/ic_launcher_background"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/ic_launcher_background" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_card_comprar"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="@string/btn_comprar"
-                    app:icon="@drawable/ic_comprar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/image_card"
-                    app:layout_constraintTop_toTopOf="@id/image_card" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/comprar"
+                    app:icon="@drawable/add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_card_cancelar"
+                    app:layout_constraintStart_toEndOf="@id/image_card_1"
+                    app:layout_constraintTop_toBottomOf="@+id/text_card" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_card_cancelar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/btn_cancelar"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/cancelar"
+                    app:icon="@drawable/baseline_cancel_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_card_comprar"
-                    app:layout_constraintTop_toTopOf="@id/btn_card_comprar"
-
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/text_card" />
 
                 <TextView
                     android:id="@+id/text_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/card_text"
-                    app:layout_constraintStart_toEndOf="@id/image_card"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textAppearance="?attr/textAppearanceBody1" />
-
+                    app:layout_constraintStart_toEndOf="@id/image_card_1"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
