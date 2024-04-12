@@ -1,5 +1,9 @@
 package mx.edu.utch.mdapp
 
+
+
+
+
 import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.Typeface
@@ -14,6 +18,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import mx.edu.utch.mdapp.databinding.ActivityMainBinding
 import java.util.Collections
 
@@ -22,12 +27,16 @@ class MainActivity : AppCompatActivity() {
     private var turno: Boolean = true
     private var gameFinished: Boolean = false
 
+
     private var first_card: ImageView? = null
     private var first_image: Int? = null
 
     private var cont: Int =0
     private var score1: Int = 0
     private var score2: Int = 0
+    private lateinit var fab: FloatingActionButton
+
+
 
     private var deck = ArrayList<Int>(
         listOf(
@@ -56,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+
         images = ArrayList<ImageView>(
             listOf(
 
@@ -77,9 +87,26 @@ class MainActivity : AppCompatActivity() {
         scoreViewPlayer1 = binding!!.scoreZone.mainActivityTvPlayer1
         scoreViewPlayer2 = binding!!.scoreZone.mainActivityTvPlayer2
 
+        fab = findViewById(R.id.fabPrincipal)
+        //inicio del boton de
+        fab.setOnClickListener {
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle("¡juego teminado!")
+            alertDialogBuilder.setMessage("jufador uno : ${score1}, jugador dos :$score2")
+            alertDialogBuilder.setPositiveButton("Reiniciar"){
+                    _, _ ->
+                resetGame()
+            }
+            alertDialogBuilder.setNegativeButton("Salir") { dialog, which ->
+                finish()
+            }
+            alertDialogBuilder.setCancelable(false)
+            alertDialogBuilder.show()
+        }
         Collections.shuffle(deck)
         startOn()
         clickOn()
+
         setSupportActionBar(binding!!.mainBottomAppBar)
     }
 
@@ -120,13 +147,15 @@ class MainActivity : AppCompatActivity() {
                     if (turno) {
                         score1++
                         cont++
-                        if (cont==6){showWinnerDialog("el jugador uno es el ganador")}
+
                         if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
+                        else if (cont==6){showWinnerDialog("el jugador uno es el ganador")}
                     } else {
                         score2++
                         cont++
-                        if (cont==6){showWinnerDialog("el jugador dos es el ganador")}
+
                         if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
+                        else if (cont==6){showWinnerDialog("el jugador dos es el ganador")}
                     }
                     startOn()
                     xtivate(true)
@@ -140,9 +169,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 updateScores()
                 checkGameFinished()
-            }, 2000)
+            }, 1000)//se altero de 2000 para poder checar mas rapido
             clicked = !clicked
         }
+
     }
     ///
     private fun xtivate(b: Boolean) {
@@ -190,10 +220,10 @@ class MainActivity : AppCompatActivity() {
         xtivate(true)
         clicked = true
         turno = true
+        cont = 0
         score1 = 0
         score2 = 0
-        scoreViewPlayer1 = binding!!.scoreZone.mainActivityTvPlayer1
-        scoreViewPlayer2 = binding!!.scoreZone.mainActivityTvPlayer2
+        updateScores()
         startOn()
     }
 
@@ -224,7 +254,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showHelp() {
-        // Implementar la lógica de ayuda si es necesario
+
     }
     //funcion para el final
     private fun showWinnerDialog(winner: String) {
