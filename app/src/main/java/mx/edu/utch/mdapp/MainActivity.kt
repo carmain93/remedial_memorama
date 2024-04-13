@@ -1,8 +1,5 @@
+
 package mx.edu.utch.mdapp
-
-
-
-
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private var clicked: Boolean = true
     private var turno: Boolean = true
     private var gameFinished: Boolean = false
-
+    private var finalquest= true
 
     private var first_card: ImageView? = null
     private var first_image: Int? = null
@@ -89,27 +86,27 @@ class MainActivity : AppCompatActivity() {
 
         fab = findViewById(R.id.fabPrincipal)
         //inicio del boton de
-        fab.setOnClickListener {
-            val alertDialogBuilder = AlertDialog.Builder(this)
-            alertDialogBuilder.setTitle("¡juego teminado!")
-            alertDialogBuilder.setMessage("jufador uno : ${score1}, jugador dos :$score2")
-            alertDialogBuilder.setPositiveButton("Reiniciar"){
-                    _, _ ->
-                resetGame()
-            }
-            alertDialogBuilder.setNegativeButton("Salir") { dialog, which ->
-                finish()
-            }
-            alertDialogBuilder.setCancelable(false)
-            alertDialogBuilder.show()
-        }
+        fab.setOnClickListener {tiemsg()}
         Collections.shuffle(deck)
         startOn()
         clickOn()
 
         setSupportActionBar(binding!!.mainBottomAppBar)
     }
-
+    private fun tiemsg(){
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("¡juego teminado!")
+        alertDialogBuilder.setMessage("jufador uno : ${score1}, jugador dos :$score2")
+        alertDialogBuilder.setPositiveButton("Reiniciar"){
+                _, _ ->
+            resetGame()
+        }
+        alertDialogBuilder.setNegativeButton("Salir") { dialog, which ->
+            finish()
+        }
+        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.show()
+    }
     private fun startOn() {
         if (turno) {
             binding!!.scoreZone.mainActivityTvPlayer1.setBackgroundColor(Color.GREEN)
@@ -129,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                 saveClick(images!![i]!!, deck[i])
             }
         }
+        Thread.sleep(3000)
     }
     ///
     private fun saveClick(img: ImageView, card: Int) {
@@ -147,13 +145,17 @@ class MainActivity : AppCompatActivity() {
                     if (turno) {
                         score1++
                         cont++
-
+                        if (cont ==5 && finalquest==true){
+                            reme()
+                        }
                         if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
                         else if (cont==6){showWinnerDialog("el jugador uno es el ganador")}
                     } else {
                         score2++
                         cont++
-
+                        if (cont ==5 && finalquest==true){
+                            reme()
+                        }
                         if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
                         else if (cont==6){showWinnerDialog("el jugador dos es el ganador")}
                     }
@@ -174,6 +176,42 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    //funcion que intenta englobar lo pedido en el remedial
+    private fun reme(){
+        var msj:String=""
+        if (score1>score2){
+            msj="El jugador uno ya casi gana"
+        }else{
+            msj="El jugador dos ya casi gana"
+        }
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle(msj)
+        alertDialogBuilder.setMessage("¿que desea hacer?")
+        alertDialogBuilder.setPositiveButton("terminar el juego"){
+                _, _ ->
+            if (msj=="El jugador uno ya casi gana"){
+                score1++
+                msj="uno"
+            }else{score2++
+                msj="dos"
+            }
+            clickVisibleCards()
+            Thread.sleep(3000)
+            cont++
+
+            if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
+            else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
+        }
+        alertDialogBuilder.setNegativeButton("segir") { dialog, which ->
+            finalquest=false
+        }
+        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.show()
+    }
+
+
+
+
     ///
     private fun xtivate(b: Boolean) {
         for (i in images!!.indices) {
@@ -211,6 +249,15 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun clickVisibleCards() {
+        for (i in images!!.indices) {
+            if (images!![i]!!.isVisible) {
+                images!![i]!!.performClick()
+            }
+        }
+        //Thread.sleep(4000)
+
+    }
     private fun resetGame() {
         for (i in (0..<images!!.size)){
             images!![i]!!.isVisible = true
@@ -223,6 +270,7 @@ class MainActivity : AppCompatActivity() {
         cont = 0
         score1 = 0
         score2 = 0
+        finalquest=true
         updateScores()
         startOn()
     }
@@ -231,13 +279,18 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.option_1 -> {
+
+
+
                 resetGame()
+
                 true
             }
             R.id.option_2 -> {
+                // Mostrar el diálogo de juego terminado
                 val alertDialogBuilder = AlertDialog.Builder(this)
-                alertDialogBuilder.setTitle("¡juego teminado!")
-                alertDialogBuilder.setMessage("jufador uno : ${score1}, jugador dos :$score2")
+                alertDialogBuilder.setTitle("¡juego terminado!")
+                alertDialogBuilder.setMessage("Jugador uno: $score1, Jugador dos: $score2")
                 alertDialogBuilder.setNegativeButton("Salir") { dialog, which ->
                     finish()
                 }
@@ -246,6 +299,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.option_3 -> {
+                // Salir del juego
                 finish()
                 true
             }
@@ -253,13 +307,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showHelp() {
 
-    }
     //funcion para el final
     private fun showWinnerDialog(winner: String) {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("¡$winner gana!")
+        alertDialogBuilder.setTitle("¡$winner ganaste!")
         alertDialogBuilder.setMessage("¿Qué quieres hacer a continuación?")
         alertDialogBuilder.setPositiveButton("Reiniciar") { dialog, which ->
             resetGame()
