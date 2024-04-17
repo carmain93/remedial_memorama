@@ -56,7 +56,12 @@ class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     private var scoreViewPlayer1: TextView? = null
     private var scoreViewPlayer2: TextView? = null
-
+    private  var cturn: TextView?=null
+    private var cerror: TextView?=null
+    private var err: Int=0
+    private var t:Int=0
+    private  var help1:Boolean=true
+    private  var help2:Boolean=true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -83,6 +88,8 @@ class MainActivity : AppCompatActivity() {
 
         scoreViewPlayer1 = binding!!.scoreZone.mainActivityTvPlayer1
         scoreViewPlayer2 = binding!!.scoreZone.mainActivityTvPlayer2
+        cerror =binding!!.gameZone.errorCounter
+        cturn=binding!!.gameZone.turnCounter
 
         fab = findViewById(R.id.fabPrincipal)
         //inicio del boton de
@@ -107,6 +114,7 @@ class MainActivity : AppCompatActivity() {
         alertDialogBuilder.setCancelable(false)
         alertDialogBuilder.show()
     }
+
     private fun startOn() {
         if (turno) {
             binding!!.scoreZone.mainActivityTvPlayer1.setBackgroundColor(Color.GREEN)
@@ -162,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                     startOn()
                     xtivate(true)
                 } else {
+                    err++
                     first_card!!.setImageResource(R.drawable.reverso)
                     img.setImageResource(R.drawable.reverso)
                     first_card!!.isEnabled = true
@@ -169,6 +178,7 @@ class MainActivity : AppCompatActivity() {
                     startOn()
                     xtivate(true)
                 }
+                t++
                 updateScores()
                 checkGameFinished()
             }, 1000)//se altero de 2000 para poder checar mas rapido
@@ -195,8 +205,8 @@ class MainActivity : AppCompatActivity() {
             }else{score2++
                 msj="dos"
             }
-            clickVisibleCards()
-            Thread.sleep(3000)
+            revealAndHideCards()
+            Thread.sleep(2000)
             cont++
 
             if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
@@ -222,6 +232,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateScores() {
         scoreViewPlayer1?.text = "Jugador 1: $score1"
         scoreViewPlayer2?.text = "Jugador 2: $score2"
+        cerror?.text = "Errores:$err "
+        cturn?.text = "Turnos:$t "
     }
 
     private fun checkGameFinished() {
@@ -270,6 +282,8 @@ class MainActivity : AppCompatActivity() {
         cont = 0
         score1 = 0
         score2 = 0
+        err=0
+        t=0
         finalquest=true
         updateScores()
         startOn()
@@ -303,8 +317,35 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 true
             }
+            R.id.option_4->{
+                if (turno){
+                    if (help1){
+                        revealAndHideCards()
+                        help1=false
+                    }
+                }else{
+                    if (help2){
+                        revealAndHideCards()
+                        help2=false
+                    }
+                }
+
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+    private fun revealAndHideCards() {
+
+        for (i in images!!.indices) {
+            images!![i]!!.setImageResource(deck[i])
+        }
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            for (i in images!!.indices) {
+                images!![i]!!.setImageResource(R.drawable.reverso)
+            }
+        }, 1000)
     }
 
 

@@ -6,5 +6,6 @@
         android:title="@string/option_2" />
     <item android:id="@+id/option_3"
         android:title="@string/option_3" />
-
+    <item android:id="@+id/option_4"
+        android:title="@string/option_4" />
 </menu>

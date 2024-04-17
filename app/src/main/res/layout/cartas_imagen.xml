@@ -112,5 +112,20 @@
                 android:src="@drawable/reverso" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/errorCounter"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:text="Errores: 0"
+            android:textSize="29dp" />
+
+        <TextView
+            android:id="@+id/turnCounter"
+            android:layout_width="161dp"
+            android:layout_height="37dp"
+            android:text="Turnos: 0"
+            android:textSize="29dp" />
+
+
     </LinearLayout>
 </layout>
