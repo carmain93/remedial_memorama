@@ -200,19 +200,38 @@ class MainActivity : AppCompatActivity() {
         alertDialogBuilder.setPositiveButton("terminar el juego"){
                 _, _ ->
             if (msj=="El jugador uno ya casi gana"){
-                score1++
+                if (turno){score1++}else{score2++}
                 msj="uno"
-            }else{score2++
-                msj="dos"
-            }
-            revealAndHideCards()
-            Thread.sleep(2000)
-            cont++
 
+            }else{
+                if (turno){score1++}else{score2++}
+                msj="dos"
+
+            }
+            updateScores()
+
+            cont++
+            revealAndHideCards()
             if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
             else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
         }
         alertDialogBuilder.setNegativeButton("segir") { dialog, which ->
+            /*
+            if (msj=="El jugador uno ya casi gana"){
+                score1++
+                msj="uno"
+                updateScores()
+            }else{score2++
+                msj="dos"
+                updateScores()
+            }
+
+
+            cont++
+            revealAndHideCards()
+            if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
+            else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
+            * */
             finalquest=false
         }
         alertDialogBuilder.setCancelable(false)
@@ -284,6 +303,8 @@ class MainActivity : AppCompatActivity() {
         score2 = 0
         err=0
         t=0
+        help1=true
+        help2=true
         finalquest=true
         updateScores()
         startOn()
@@ -322,11 +343,15 @@ class MainActivity : AppCompatActivity() {
                     if (help1){
                         revealAndHideCards()
                         help1=false
+                    }else{
+                        negar()
                     }
                 }else{
                     if (help2){
                         revealAndHideCards()
                         help2=false
+                    }else{
+                        negar()
                     }
                 }
 
@@ -345,9 +370,19 @@ class MainActivity : AppCompatActivity() {
             for (i in images!!.indices) {
                 images!![i]!!.setImageResource(R.drawable.reverso)
             }
-        }, 1000)
+        }, 2000)
     }
+private fun negar(){
+    val alertDialogBuilder = AlertDialog.Builder(this)
+    alertDialogBuilder.setTitle("Usted ya a consumido su ayuda ya no tiene mas")
+    alertDialogBuilder.setMessage("ya a consumido su ayuda en este juego no puede tene otra")
 
+    alertDialogBuilder.setNegativeButton("Salir") { dialog, which ->
+
+    }
+    alertDialogBuilder.setCancelable(false)
+    alertDialogBuilder.show()
+}
 
     //funcion para el final
     private fun showWinnerDialog(winner: String) {
