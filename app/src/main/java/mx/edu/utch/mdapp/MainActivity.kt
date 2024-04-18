@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity() {
             revealAndHideCards()
             if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
             else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
-           // * */
+
             finalquest=false
         }
         alertDialogBuilder.setCancelable(false)
