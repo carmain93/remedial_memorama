@@ -216,22 +216,23 @@ class MainActivity : AppCompatActivity() {
             else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
         }
         alertDialogBuilder.setNegativeButton("segir") { dialog, which ->
-            /*
+
             if (msj=="El jugador uno ya casi gana"){
-                score1++
+                if (turno){score1++}else{score2++}
                 msj="uno"
-                updateScores()
-            }else{score2++
+
+            }else{
+                if (turno){score1++}else{score2++}
                 msj="dos"
-                updateScores()
+
             }
 
-
+            updateScores()
             cont++
             revealAndHideCards()
             if (cont ==6 && score1==score2){showWinnerDialog("ubo un empate que bien")}
             else if (cont==6){showWinnerDialog("el jugador ${msj} es el ganador")}
-            * */
+           // * */
             finalquest=false
         }
         alertDialogBuilder.setCancelable(false)
